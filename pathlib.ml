@@ -9,6 +9,7 @@ let abs2name abs_path =
     name
 ;;
 
+(* Sys.readdir cannot read complex paths *)
 let readdir s_dir =
     let ex_cwd = Sys.getcwd() in
     Sys.chdir s_dir;
