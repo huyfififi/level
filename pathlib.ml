@@ -8,3 +8,11 @@ let abs2name abs_path =
     print_newline ();
     name
 ;;
+
+let readdir s_dir =
+    let ex_cwd = Sys.getcwd() in
+    Sys.chdir s_dir;
+    let file_names = Sys.readdir "." in
+    let comp_files = Array.map (fun s -> s_dir ^ "/" ^ s) file_names in 
+    Sys.chdir ex_cwd;
+    Array.to_list comp_files
