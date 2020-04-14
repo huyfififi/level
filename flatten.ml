@@ -17,9 +17,14 @@ let rec print_str_list l =
 
 let readdir_abs s_dir =
     let ex_cwd = Sys.getcwd() in
-    let new_cwd = ex_cwd ^ "/" ^ (Pathlib.abs2name s_dir) in
+    (*let new_cwd = ex_cwd ^ "/" ^ (Pathlib.abs2name s_dir) in*)
+    let new_cwd = s_dir in
     Sys.chdir new_cwd;
-    let file_names = Sys.readdir s_dir in
+    print_string "before sys.readdir";
+    print_newline ();
+    let file_names = Sys.readdir "." in
+    print_string "after sys.readdir";
+    print_newline ();
     let abs_files = Array.map (fun s -> new_cwd ^ "/" ^ s) file_names in
     Sys.chdir ex_cwd;
     Array.to_list abs_files
