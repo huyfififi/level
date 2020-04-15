@@ -1,4 +1,7 @@
 open String
+open Sys
+
+open Stringlib
 
 
 let abs2name abs_path =
@@ -17,3 +20,12 @@ let readdir s_dir =
     let comp_files = Array.map (fun s -> s_dir ^ "/" ^ s) file_names in 
     Sys.chdir ex_cwd;
     Array.to_list comp_files
+;;
+
+let rec comp2abs comp_list =
+    match comp_list with
+    [] -> []
+    | h::t -> 
+        let abs_paths = Stringlib.replace (Sys.getcwd () ^ h) "./" "/" in
+        abs_paths :: comp2abs t
+;;
