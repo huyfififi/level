@@ -1,3 +1,4 @@
+ocamlopt -c stringlib.ml
 ocamlopt -c pathlib.ml
 ocamlopt -c flatten.ml
-ocamlopt -o flatten pathlib.cmx flatten.cmx
+ocamlopt -o flatten stringlib.cmx pathlib.cmx flatten.cmx
