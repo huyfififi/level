@@ -6,6 +6,18 @@ open Sys
 open Pathlib
 open Stringlib
 
+
+let rec move_files old_paths new_paths =
+    (* Assert that len of old_paths and new_paths equal*)
+    match old_paths, new_paths with
+    | [], [] -> ()
+    | [], _::_ -> ()
+    | _::_, [] -> ()
+    | h1::t1, h2::t2 ->
+        Sys.rename h1 h2;
+        move_files t1 t2
+;;
+
 let rec level cwd path =
     match cwd with
     "" -> Stringlib.replace path "/" "_"
@@ -38,8 +50,8 @@ let rec_readdir s_dir =
 
 let () =
     let dir_contents = rec_readdir "." in
-    let abs_contents = Pathlib.comp2abs dir_contents in
+    let old_paths = Pathlib.comp2abs dir_contents in
     let cwd = Sys.getcwd() ^ "/" in
-    print_str_list (abs_contents);
-    print_str_list (List.map (level cwd) abs_contents)
+    let new_paths = List.map (level cwd) old_paths in
+    move_files old_paths new_paths
 ;;
