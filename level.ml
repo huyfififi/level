@@ -48,10 +48,32 @@ let rec_readdir s_dir =
     rec_readdir_inner (Pathlib.readdir s_dir)
 ;;
 
+(* Sys.remove cannot remove directory *)
+let rec delete_dir dir_list =
+    match dir_list with
+    [] -> 0
+    | h::t ->
+        let ex_code = Sys.command ("rm -r " ^ h) in
+        ex_code + delete_dir t
+;;
+
+let rec rec_finddir_inner dir_list =
+    match dir_list with
+    [] -> []
+    | h::t ->
+        if Sys.is_directory h then h :: rec_finddir_inner t else rec_finddir_inner t
+;;
+
+let rec_finddir s_dir =
+    rec_finddir_inner (Pathlib.readdir s_dir)
+;;
+
 let () =
     let dir_contents = rec_readdir "." in
     let old_paths = Pathlib.comp2abs dir_contents in
     let cwd = Sys.getcwd() ^ "/" in
     let new_paths = List.map (level cwd) old_paths in
-    move_files old_paths new_paths
+    move_files old_paths new_paths;
+    let dir_list = rec_finddir "." in
+    print_int (delete_dir dir_list)
 ;;
