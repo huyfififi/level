@@ -3,8 +3,8 @@ open List
 open String
 open Sys
 
-open Pathlib
-open Stringlib
+open Pathutil
+open Stringutil
 
 
 let rec move_files old_paths new_paths =
@@ -20,7 +20,7 @@ let rec move_files old_paths new_paths =
 
 let rec level cwd path =
     match cwd with
-    "" -> Stringlib.replace path "/" "_"
+    "" -> Stringutil.replace path "/" "_"
     |_ -> 
         let len_cwd = String.length cwd in
         let len_path = String.length path in
@@ -41,11 +41,11 @@ let rec rec_readdir_inner dir_list =
     match dir_list with
     [] -> []
     | h::t -> 
-        if Sys.is_directory h then rec_readdir_inner (Pathlib.readdir h) @ rec_readdir_inner t else h :: rec_readdir_inner t
+        if Sys.is_directory h then rec_readdir_inner (Pathutil.readdir h) @ rec_readdir_inner t else h :: rec_readdir_inner t
 ;;
 
 let rec_readdir s_dir = 
-    rec_readdir_inner (Pathlib.readdir s_dir)
+    rec_readdir_inner (Pathutil.readdir s_dir)
 ;;
 
 (* Sys.remove cannot remove directory *)
@@ -65,12 +65,12 @@ let rec rec_finddir_inner dir_list =
 ;;
 
 let rec_finddir s_dir =
-    rec_finddir_inner (Pathlib.readdir s_dir)
+    rec_finddir_inner (Pathutil.readdir s_dir)
 ;;
 
 let () =
     let dir_contents = rec_readdir "." in
-    let old_paths = Pathlib.comp2abs dir_contents in
+    let old_paths = Pathutil.comp2abs dir_contents in
     let cwd = Sys.getcwd() ^ "/" in
     let new_paths = List.map (level cwd) old_paths in
     move_files old_paths new_paths;

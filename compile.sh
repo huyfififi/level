@@ -1,4 +1,4 @@
-ocamlopt -c stringlib.ml
-ocamlopt -c pathlib.ml
+ocamlopt -c stringutil.ml
+ocamlopt -c pathutil.ml
 ocamlopt -c level.ml
-ocamlopt -o level stringlib.cmx pathlib.cmx level.cmx
+ocamlopt -o level stringutil.cmx pathutil.cmx level.cmx

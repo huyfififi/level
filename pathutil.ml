@@ -1,7 +1,7 @@
 open String
 open Sys
 
-open Stringlib
+open Stringutil
 
 
 let abs2name abs_path =
@@ -26,6 +26,6 @@ let rec comp2abs comp_list =
     match comp_list with
     [] -> []
     | h::t -> 
-        let abs_paths = Stringlib.replace (Sys.getcwd () ^ h) "./" "/" in
+        let abs_paths = Stringutil.replace (Sys.getcwd () ^ h) "./" "/" in
         abs_paths :: comp2abs t
 ;;
